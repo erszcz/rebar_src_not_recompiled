@@ -1,0 +1,64 @@
+$ r3 --version
+rebar 3.14.4+build.4978.ref942a9fa8 on Erlang/OTP 23 Erts 11.1.3
+13:22:47 erszcz @ x6 : /tmp/src_not_recompiled
+$ tree
+.
+|-- LICENSE
+|-- README.md
+|-- log
+|-- log2
+|-- rebar.config
+|-- rebar.lock
+`-- src
+    |-- header.hrl
+    |-- src_not_recompiled.app.src
+    |-- src_not_recompiled.erl
+    `-- subdir
+        `-- m.erl
+
+2 directories, 10 files
+13:22:48 erszcz @ x6 : /tmp/src_not_recompiled
+$ cat rebar.config
+{erl_opts, [debug_info]}.
+{deps, []}.
+{src_dirs, ["src", "src/subdir"]}.
+13:22:51 erszcz @ x6 : /tmp/src_not_recompiled
+$ rg -C1 MACRO src/
+src/subdir/m.erl
+7-f() ->
+8:    ?MACRO.
+
+src/header.hrl
+1:-define(MACRO, t6).
+13:22:52 erszcz @ x6 : /tmp/src_not_recompiled
+$ r3 shell
+===> Verifying dependencies...
+===> Analyzing applications...
+===> Compiling src_not_recompiled
+Erlang/OTP 23 [erts-11.1.3] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [hipe]
+
+Eshell V11.1.3  (abort with ^G)
+1> m:f().
+t6
+2>
+13:22:59 erszcz @ x6 : /tmp/src_not_recompiled
+$ rg -C1 MACRO src/
+src/subdir/m.erl
+7-f() ->
+8:    ?MACRO.
+
+src/header.hrl
+1:-define(MACRO, t7).
+13:23:05 erszcz @ x6 : /tmp/src_not_recompiled
+$ r3 shell
+===> Verifying dependencies...
+===> Analyzing applications...
+===> Compiling src_not_recompiled
+Erlang/OTP 23 [erts-11.1.3] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [hipe]
+
+Eshell V11.1.3  (abort with ^G)
+1> m:f().
+t6
+2>
+13:23:09 erszcz @ x6 : /tmp/src_not_recompiled
+$
